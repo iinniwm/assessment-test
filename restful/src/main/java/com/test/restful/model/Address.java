@@ -1,7 +1,7 @@
 package com.test.restful.model;
 
 public class Address {
-    private String Street;
+    private String street;
     private String suite;
     private String city;
     private String zipcode;
@@ -24,11 +24,11 @@ public class Address {
     }
 
     public String getStreet() {
-        return Street;
+        return street;
     }
 
     public void setStreet(String street) {
-        Street = street;
+        this.street = street;
     }
 
     public String getZipcode() {
