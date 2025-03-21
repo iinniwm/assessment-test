@@ -35,7 +35,7 @@ public class SecurityConfig {
             )
             .httpBasic(httpBasic -> {})
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .headers(headers -> headers.frameOptions().disable()); // For H2 console
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())); // For H2 console
         
         return http.build();
     }
