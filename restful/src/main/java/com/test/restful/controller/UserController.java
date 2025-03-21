@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -52,14 +51,14 @@ public class UserController {
      */
     @GetMapping("/paginated")
     @Operation(summary = "Get all users with pagination", description = "Returns a paginated list of users")
-    public ResponseEntity<com.test.restful.model.ApiResponse<Page<User>>> getAllUsersPaginated(
+    public ResponseEntity<ApiResponse<Page<User>>> getAllUsersPaginated(
             @PageableDefault(size = 10, sort = "id") Pageable pageable) {
         
         logger.info("Fetching paginated users with page: {}, size: {}", 
                 pageable.getPageNumber(), pageable.getPageSize());
         
         Page<User> users = userService.getAllUsers(pageable);
-        return ResponseEntity.ok(com.test.restful.model.ApiResponse.success(users, "Users retrieved successfully"));
+        return ResponseEntity.ok(ApiResponse.success(users, "Users retrieved successfully"));
     }
 
     /**
@@ -69,7 +68,7 @@ public class UserController {
      */
     @GetMapping
     @Operation(summary = "Get all users", description = "Returns a list of all users")
-    public ResponseEntity<com.test.restful.model.ApiResponse<List<EntityModel<User>>>> getAllUsers() {
+    public ResponseEntity<ApiResponse<List<EntityModel<User>>>> getAllUsers() {
         logger.info("Fetching all users");
         
         List<User> users = userService.getAllUsers();
@@ -86,7 +85,7 @@ public class UserController {
                 })
                 .collect(Collectors.toList());
         
-        return ResponseEntity.ok(com.test.restful.model.ApiResponse.success(userModels, "Users retrieved successfully"));
+        return ResponseEntity.ok(ApiResponse.success(userModels, "Users retrieved successfully"));
     }
 
     /**
@@ -98,11 +97,11 @@ public class UserController {
     @GetMapping("/{userId}")
     @Operation(summary = "Get user by ID", description = "Returns a user by ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "User found",
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "User found",
                 content = @Content(schema = @Schema(implementation = User.class))),
-        @ApiResponse(responseCode = "404", description = "User not found")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "User not found")
     })
-    public ResponseEntity<com.test.restful.model.ApiResponse<EntityModel<User>>> getUserById(
+    public ResponseEntity<ApiResponse<EntityModel<User>>> getUserById(
             @Parameter(description = "ID of the user to retrieve") @PathVariable Long userId) {
         
         logger.info("Fetching user with ID: {}", userId);
@@ -125,7 +124,7 @@ public class UserController {
         
         userModel.add(selfLink, allUsersLink);
         
-        return ResponseEntity.ok(com.test.restful.model.ApiResponse.success(userModel, "User retrieved successfully"));
+        return ResponseEntity.ok(ApiResponse.success(userModel, "User retrieved successfully"));
     }
 
     /**
@@ -136,7 +135,7 @@ public class UserController {
      */
     @PostMapping
     @Operation(summary = "Create a new user", description = "Creates a new user and returns the created user")
-    public ResponseEntity<com.test.restful.model.ApiResponse<EntityModel<User>>> createUser(
+    public ResponseEntity<ApiResponse<EntityModel<User>>> createUser(
             @Valid @RequestBody User user) {
         
         logger.info("Creating new user with username: {}", user.getUsername());
@@ -153,7 +152,7 @@ public class UserController {
         userModel.add(selfLink);
         
         return new ResponseEntity<>(
-                com.test.restful.model.ApiResponse.success(userModel, "User created successfully"),
+                ApiResponse.success(userModel, "User created successfully"),
                 HttpStatus.CREATED);
     }
 
@@ -166,7 +165,7 @@ public class UserController {
      */
     @PutMapping("/{userId}")
     @Operation(summary = "Update a user", description = "Updates an existing user and returns the updated user")
-    public ResponseEntity<com.test.restful.model.ApiResponse<EntityModel<User>>> updateUser(
+    public ResponseEntity<ApiResponse<EntityModel<User>>> updateUser(
             @PathVariable Long userId,
             @Valid @RequestBody User userDetails) {
         
@@ -183,7 +182,7 @@ public class UserController {
         
         userModel.add(selfLink);
         
-        return ResponseEntity.ok(com.test.restful.model.ApiResponse.success(userModel, "User updated successfully"));
+        return ResponseEntity.ok(ApiResponse.success(userModel, "User updated successfully"));
     }
 
     /**
@@ -194,7 +193,7 @@ public class UserController {
      */
     @DeleteMapping("/{userId}")
     @Operation(summary = "Delete a user", description = "Deletes a user by ID")
-    public ResponseEntity<com.test.restful.model.ApiResponse<Void>> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId) {
         logger.info("Deleting user with ID: {}", userId);
         
         boolean deleted = userService.deleteUser(userId);
@@ -203,6 +202,6 @@ public class UserController {
             throw new ResourceNotFoundException("User not found with id: " + userId);
         }
 
-        return ResponseEntity.ok(com.test.restful.model.ApiResponse.success(null, "User deleted successfully"));
+        return ResponseEntity.ok(ApiResponse.success(null, "User deleted successfully"));
     }
 }
