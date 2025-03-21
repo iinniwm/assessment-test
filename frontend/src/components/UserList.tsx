@@ -33,7 +33,9 @@ const UserList = () => {
       const data = await fetchUsers();
       setUsers(data);
       setError(null);
+      console.log("Loaded users:", data);
     } catch (err) {
+      console.error("Error loading users:", err);
       setError('Failed to load users. Please try again later.');
       toast({
         title: 'Error',
@@ -93,17 +95,20 @@ const UserList = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Users</h1>
-        <Button onClick={() => setIsCreateDialogOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" /> Add User
-        </Button>
+        <button 
+          onClick={() => setIsCreateDialogOpen(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center"
+        >
+          <span className="mr-2">+</span> Add User
+        </button>
       </div>
 
       {loading ? (
         <div className="text-center py-10">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary border-r-transparent"></div>
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-r-transparent"></div>
           <p className="mt-2 text-gray-500">Loading users...</p>
         </div>
       ) : error ? (
@@ -155,31 +160,27 @@ const UserList = () => {
                       {user.phone || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                      <Link to={`/users/${user.id}`}>
-                        <Button variant="ghost" size="sm">
-                          <Eye className="h-4 w-4" />
-                        </Button>
+                      <Link to={`/users/${user.id}`} className="text-blue-600 hover:text-blue-800 mr-2">
+                        View
                       </Link>
-                      <Button 
-                        variant="ghost" 
-                        size="sm"
+                      <button 
+                        className="text-green-600 hover:text-green-800 mr-2"
                         onClick={() => {
                           setSelectedUser(user);
                           setIsEditDialogOpen(true);
                         }}
                       >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="sm"
+                        Edit
+                      </button>
+                      <button 
+                        className="text-red-600 hover:text-red-800"
                         onClick={() => {
                           setSelectedUser(user);
                           setIsDeleteDialogOpen(true);
                         }}
                       >
-                        <Trash2 className="h-4 w-4 text-red-500" />
-                      </Button>
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))
