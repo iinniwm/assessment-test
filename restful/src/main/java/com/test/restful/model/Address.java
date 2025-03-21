@@ -7,6 +7,14 @@ public class Address {
     private String zipcode;
     private Geo geo;
 
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
     public String getSuite() {
         return suite;
     }
@@ -21,14 +29,6 @@ public class Address {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
     }
 
     public String getZipcode() {

@@ -5,15 +5,10 @@ public class ApiResponse<T> {
     private T data;
     private String message;
 
-    public ApiResponse(boolean success, T data, String message) {
+    private ApiResponse(boolean success, T data, String message) {
         this.success = success;
         this.data = data;
         this.message = message;
-    }
-
-    // Static factory methods for common responses
-    public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(true, data, null);
     }
 
     public static <T> ApiResponse<T> success(T data, String message) {
@@ -24,7 +19,6 @@ public class ApiResponse<T> {
         return new ApiResponse<>(false, null, message);
     }
 
-    // Getters and setters
     public boolean isSuccess() {
         return success;
     }

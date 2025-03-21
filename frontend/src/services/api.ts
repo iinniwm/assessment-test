@@ -1,10 +1,11 @@
 import { User } from "@/types/user";
 
-const API_URL = '/api';
+// Use direct endpoint without /api prefix since we're using the proxy
+const API_URL = '/users';
 
 export const fetchUsers = async (): Promise<User[]> => {
   try {
-    const response = await fetch(`${API_URL}/users`);
+    const response = await fetch(API_URL);
     if (!response.ok) {
       throw new Error('Failed to fetch users');
     }
@@ -18,7 +19,7 @@ export const fetchUsers = async (): Promise<User[]> => {
 
 export const fetchUserById = async (id: number): Promise<User> => {
   try {
-    const response = await fetch(`${API_URL}/users/${id}`);
+    const response = await fetch(`${API_URL}/${id}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch user with ID ${id}`);
     }
@@ -32,7 +33,7 @@ export const fetchUserById = async (id: number): Promise<User> => {
 
 export const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
   try {
-    const response = await fetch(`${API_URL}/users`, {
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +56,7 @@ export const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
 
 export const updateUser = async (id: number, user: Partial<User>): Promise<User> => {
   try {
-    const response = await fetch(`${API_URL}/users/${id}`, {
+    const response = await fetch(`${API_URL}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -78,7 +79,7 @@ export const updateUser = async (id: number, user: Partial<User>): Promise<User>
 
 export const deleteUser = async (id: number): Promise<void> => {
   try {
-    const response = await fetch(`${API_URL}/users/${id}`, {
+    const response = await fetch(`${API_URL}/${id}`, {
       method: 'DELETE',
     });
     
